@@ -1,5 +1,6 @@
 package niv.burning.energy.config;
 
+import static niv.burning.energy.BurningEnergy.LOGGER;
 import static niv.burning.energy.BurningEnergy.MOD_ID;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public final class ConfigurationLoader {
     private static final long DELAY = 5000; // ms (5s)
 
     private static final Gson gson = new GsonBuilder()
+            .setLenient()
             .setPrettyPrinting()
             .create();
 
@@ -54,8 +56,12 @@ public final class ConfigurationLoader {
         var now = System.currentTimeMillis();
         if (timestamp + DELAY < now) {
             var file = configurationFile.get();
-            if (create(file) || read(file)) {
-                write(file);
+            try {
+                if (create(file) || read(file)) {
+                    write(file);
+                }
+            } catch (IllegalStateException ex) {
+                LOGGER.warn(ex.getMessage(), ex);
             }
             timestamp = now;
         }
@@ -63,7 +69,9 @@ public final class ConfigurationLoader {
 
     private static final boolean create(File file) {
         try {
-            return (file.getParentFile().isDirectory() || file.getParentFile().mkdirs()) && file.createNewFile();
+            return !file.isFile()
+                    && (file.getParentFile().isDirectory() || file.getParentFile().mkdirs())
+                    && file.createNewFile();
         } catch (IOException ex) {
             throw new IllegalStateException("Failed to create configuration file", ex);
         }
@@ -96,5 +104,4 @@ public final class ConfigurationLoader {
             throw new IllegalStateException("Failed to write configuration file", ex);
         }
     }
-
 }

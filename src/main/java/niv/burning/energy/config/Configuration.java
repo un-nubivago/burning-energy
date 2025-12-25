@@ -7,9 +7,8 @@ import net.fabricmc.fabric.api.event.EventFactory;
 
 public final class Configuration {
 
-    public static final Event<Runnable> LOADED = EventFactory
-            .createArrayBacked(Runnable.class,
-                    runnables -> () -> Stream.of(runnables).forEach(Runnable::run));
+    public static final Event<Runnable> LOADED = EventFactory.createArrayBacked(Runnable.class,
+            runnables -> () -> Stream.of(runnables).forEach(Runnable::run));
 
     private boolean enableEnergyToBurning = true;
     private boolean enableBurningToEnergy = false;

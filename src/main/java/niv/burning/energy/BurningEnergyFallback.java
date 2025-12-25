@@ -1,9 +1,7 @@
 package niv.burning.energy;
 
-import static java.util.function.Predicate.not;
-
 import java.util.Objects;
-import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 
@@ -18,6 +16,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class BurningEnergyFallback<A, B> implements BlockApiProvider<B, @Nullable Direction> {
+
+    private static final ThreadLocal<AtomicBoolean> IS_GATE_CLOSE = ThreadLocal
+            .withInitial(() -> new AtomicBoolean(false));
 
     private final BooleanSupplier enable;
 
@@ -34,16 +35,15 @@ public final class BurningEnergyFallback<A, B> implements BlockApiProvider<B, @N
     }
 
     @Override
-    public @Nullable B find(Level world, BlockPos pos, BlockState state,
+    public @Nullable B find(Level level, BlockPos pos, BlockState state,
             @Nullable BlockEntity blockEntity, @Nullable Direction direction) {
-        if (this.enable.getAsBoolean()) {
-            return Optional.ofNullable(this.lookup.getProvider(state.getBlock()))
-                    .filter(not(BurningEnergyFallback.class::isInstance))
-                    .map(provider -> provider.find(world, pos, state, blockEntity, direction))
-                    .map(this.constructor)
-                    .orElse(null);
-        } else {
-            return null;
-        }
+        A api = null;
+        if (this.enable.getAsBoolean() && IS_GATE_CLOSE.get().compareAndSet(false, true))
+            try {
+                api = this.lookup.find(level, pos, state, blockEntity, direction);
+            } finally {
+                IS_GATE_CLOSE.remove();
+            }
+        return api == null ? null : this.constructor.apply(api);
     }
 }
