@@ -16,7 +16,7 @@ import team.reborn.energy.api.EnergyStorage;
 
 public class BurningEnergy implements ModInitializer {
 
-    public static final String MOD_ID = "burning-energy";
+    public static final String MOD_ID = "burning_energy";
 
     public static final String MOD_NAME = "Burning Energy";
 
