@@ -11,7 +11,7 @@ public final class Configuration {
             runnables -> () -> Stream.of(runnables).forEach(Runnable::run));
 
     private boolean enableEnergyToBurning = true;
-    private boolean enableBurningToEnergy = false;
+    private boolean enableBurningToEnergy = true;
 
     Configuration() {
     }
