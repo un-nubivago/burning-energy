@@ -104,7 +104,6 @@ modrinth {
     versionType = "release"
     gameVersions = Arrays.asList("${project.game_versions}".toString().split(","))
     uploadFile = remapJar
-    additionalFiles = ["build/libs/${project.archives_base_name}-${project.mod_version}-sources.jar"]
     syncBodyFrom = "sh README.sh".execute().text
     dependencies {
         required.project "fabric-api"
