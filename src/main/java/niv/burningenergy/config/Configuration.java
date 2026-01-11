@@ -1,4 +1,4 @@
-package niv.burning.energy.config;
+package niv.burningenergy.config;
 
 import java.util.stream.Stream;
 

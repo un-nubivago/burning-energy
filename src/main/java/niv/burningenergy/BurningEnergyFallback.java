@@ -1,4 +1,4 @@
-package niv.burning.energy;
+package niv.burningenergy;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -17,14 +17,13 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public final class BurningEnergyFallback<A, B> implements BlockApiProvider<B, @Nullable Direction> {
 
-    private static final ThreadLocal<AtomicBoolean> IS_GATE_CLOSE = ThreadLocal
-            .withInitial(() -> new AtomicBoolean(false));
-
     private final BooleanSupplier enable;
 
     private final BlockApiLookup<A, @Nullable Direction> lookup;
 
     private final Function<A, B> constructor;
+
+    private final AtomicBoolean hasDescended = new AtomicBoolean(false);
 
     public BurningEnergyFallback(BooleanSupplier enable,
             BlockApiLookup<A, @Nullable Direction> lookup,
@@ -38,11 +37,11 @@ public final class BurningEnergyFallback<A, B> implements BlockApiProvider<B, @N
     public @Nullable B find(Level level, BlockPos pos, BlockState state,
             @Nullable BlockEntity blockEntity, @Nullable Direction direction) {
         A api = null;
-        if (this.enable.getAsBoolean() && IS_GATE_CLOSE.get().compareAndSet(false, true))
+        if (this.enable.getAsBoolean() && this.hasDescended.compareAndSet(false, true))
             try {
                 api = this.lookup.find(level, pos, state, blockEntity, direction);
             } finally {
-                IS_GATE_CLOSE.remove();
+                this.hasDescended.set(false);
             }
         return api == null ? null : this.constructor.apply(api);
     }

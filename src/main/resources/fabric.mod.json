@@ -16,7 +16,7 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "niv.burning.energy.BurningEnergy"
+            "niv.burningenergy.BurningEnergy"
         ]
     },
     "depends": {

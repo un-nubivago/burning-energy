@@ -1,7 +1,7 @@
-package niv.burning.energy.config;
+package niv.burningenergy.config;
 
-import static niv.burning.energy.BurningEnergy.LOGGER;
-import static niv.burning.energy.BurningEnergy.MOD_ID;
+import static niv.burningenergy.BurningEnergy.LOGGER;
+import static niv.burningenergy.BurningEnergy.MOD_ID;
 
 import java.io.File;
 import java.io.FileReader;
