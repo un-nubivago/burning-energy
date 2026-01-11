@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.function.Supplier;
 
 import com.google.common.base.Suppliers;
+import com.google.common.hash.Hashing;
+import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
@@ -40,6 +42,8 @@ public final class ConfigurationLoader {
 
     private static boolean fireOnReturn = true;
 
+    private static long lastChecksum;
+
     private ConfigurationLoader() {
     }
 
@@ -69,21 +73,23 @@ public final class ConfigurationLoader {
 
     private static final boolean create(File file) {
         try {
-            return !file.isFile()
-                    && (file.getParentFile().isDirectory() || file.getParentFile().mkdirs())
-                    && file.createNewFile();
+            return file.createNewFile();
         } catch (IOException ex) {
             throw new IllegalStateException("Failed to create configuration file", ex);
         }
     }
 
     private static final boolean read(File file) {
+        fireOnReturn = false;
+
         var newLastModified = file.lastModified();
-        if (newLastModified <= lastModified) {
+        if (newLastModified <= lastModified)
             return false;
-        } else {
-            lastModified = newLastModified;
-        }
+
+        var newChecksum = hash(file);
+        if (newChecksum == lastChecksum)
+            return false;
+
         try (var reader = new FileReader(file)) {
             var result = gson.fromJson(reader, Configuration.class);
             if (result != null) {
@@ -99,9 +105,19 @@ public final class ConfigurationLoader {
     private static final void write(File file) {
         try (var writer = new FileWriter(file)) {
             gson.toJson(configuration, writer);
+            writer.flush();
             lastModified = file.lastModified();
+            lastChecksum = hash(file);
         } catch (JsonIOException | IOException ex) {
             throw new IllegalStateException("Failed to write configuration file", ex);
+        }
+    }
+
+    private static final long hash(File file) {
+        try {
+            return Files.asByteSource(file).hash(Hashing.sha256()).padToLong();
+        } catch (IOException ex) {
+            throw new IllegalStateException("Failed to hash configuration file", ex);
         }
     }
 }
