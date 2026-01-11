@@ -1,6 +1,6 @@
 # Burning Energy
 
-**Burning Energy** allows mods that produce and transfer energy through the [**Fabric Energy API**](https://github.com/TechReborn/Energy) to transfer it to every furnace-like block [**Burning**](https://github.com/NivOridocs/burning) recognizes, and vice versa with burning fuel and energy storages.
+**Burning Energy** allows mods that produce and transfer energy through the [**Fabric Energy API**](https://github.com/TechReborn/Energy) to transfer it to every furnace-like block [**Burning**](https://github.com/un-nubivago/burning) recognizes, and vice versa with burning fuel and energy storages.
 
 For instance, you can use any energy generator to power a good old vanilla **Furnace**.
 
