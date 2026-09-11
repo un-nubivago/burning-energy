@@ -4,6 +4,8 @@
 
 For instance, you can use a **Heater** from my [**homonymous mod**](https://github.com/un-nubivago/heater) to power a [**TechReborn**](https://github.com/TechReborn/TechReborn)'s **Electric Furnace**, or use the latter's **Generator** to power a good old vanilla **Furnace**.
 
+![Showcase](img/Showcase_1.png)
+
 ## Configurations
 
 Burning Energy only has two configurations.
