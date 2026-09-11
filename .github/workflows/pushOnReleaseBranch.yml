@@ -44,3 +44,4 @@ jobs:
       - name: Modrinth Deploy
         run: |
           ./gradlew modrinth
+          ./gradlew modrinthSyncBody
