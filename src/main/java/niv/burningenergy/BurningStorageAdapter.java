@@ -36,11 +36,13 @@ public final class BurningStorageAdapter implements EnergyStorage {
         return this.upstream.extract(FuelVariant.LAVA_BUCKET, maxAmount * 5 / 2, transaction) * 2 / 5;
     }
 
+    @SuppressWarnings("null")
     @Override
     public long getAmount() {
         return Streams.stream(this.upstream.nonEmptyIterator()).mapToLong(StorageView::getAmount).sum();
     }
 
+    @SuppressWarnings("null")
     @Override
     public long getCapacity() {
         return Streams.stream(this.upstream.nonEmptyIterator()).mapToLong(StorageView::getCapacity).sum();

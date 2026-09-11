@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup.BlockApiProvider;
@@ -36,7 +36,7 @@ public final class BurningEnergyFallback<A, B> implements BlockApiProvider<B, @N
     @Override
     public @Nullable B find(Level level, BlockPos pos, BlockState state,
             @Nullable BlockEntity blockEntity, @Nullable Direction direction) {
-        A api = null;
+        @Nullable A api = null;
         if (this.enable.getAsBoolean() && this.hasDescended.compareAndSet(false, true))
             try {
                 api = this.lookup.find(level, pos, state, blockEntity, direction);

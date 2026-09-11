@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [2.0] - 2026-09-11
+
+### Changed
+
++ Changed base Minecraft version to 26.1.
+
 ## [1.1] - 2026-01-11
 
 ### Changed
@@ -13,5 +19,7 @@
 
 Initial release.
 
-[1.1]: https://github.com/un-nubivago/burning-energy/releases/tag/1.1
+[Unreleased]: https://github.com/un-nubivago/burning-energy/compare/2.0...HEAD
+[2.0]: https://github.com/un-nubivago/burning-energy/compare/1.1...2.0
+[1.1]: https://github.com/un-nubivago/burning-energy/compare/1.0...1.1
 [1.0]: https://github.com/un-nubivago/burning-energy/releases/tag/1.0
